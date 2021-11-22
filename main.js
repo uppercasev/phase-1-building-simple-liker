@@ -4,8 +4,30 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+const errorModal = document.querySelector("#modal");
+const likeHearts = document.querySelectorAll(".like-glyph");
+const hideError = function() {errorModal.className = "hidden"};
+hideError();
 
-
+likeHearts.forEach((heart) => {
+  heart.addEventListener('mousedown', function() {
+    mimicServerCall()
+    .then(function() {
+      if (heart.className === "like-glyph") {
+        heart.innerHTML = FULL_HEART;
+        heart.className += " activated-heart";
+      } else {
+        heart.innerHTML = EMPTY_HEART;
+        heart.className = "like-glyph";
+      }
+    })
+    .catch(function(reject) {
+      errorModal.innerHTML = reject;
+      errorModal.className = "";
+      setTimeout(hideError, 3000);
+    });
+  });
+});
 
 //------------------------------------------------------------------------------
 // Don't change the code below: this function mocks the server response
